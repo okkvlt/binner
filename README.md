@@ -13,7 +13,12 @@ A simple program for manipulating data and bytes of binary files. Useful for qui
 - _Byte inserter (not yet implemented);_
 - _Byte remover (not yet implemented)._
 
-### ▪ Demo
-[![Demonstration of byte reader](https://i.imgur.com/iEffLsN.png)](https://nodesource.com/products/nsolid)
+### ▪ How to use
+Use: ./binner [bin_file]
+
+### ▪ Demonstration
+Example: `$ ./binner exit.out`
+
+![Demonstration of byte reader](https://i.imgur.com/iEffLsN.png)
 
 \~ Coded by okkvlt.
