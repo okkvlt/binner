@@ -42,7 +42,7 @@ void show_bytes_from_buffer(unsigned char *buff, long len)
 
         for (int j = i * 16; j < 16 * (i + 1); j++)
         {
-            if (buff[j] < 256)
+            if (j < len && buff[j] < 256)
                 printf("%.2x ", buff[j]);
         }
 
@@ -50,7 +50,7 @@ void show_bytes_from_buffer(unsigned char *buff, long len)
 
         for (int j = i * 16; j < 16 * (i + 1); j++)
         {
-            if (buff[j] < 256)
+            if (j < len && buff[j] < 256)
             {
                 if (buff[j] > 32 && buff[j] < 127)
                     printf("%c", (char) buff[j]);
@@ -66,7 +66,7 @@ void show_bytes_from_buffer(unsigned char *buff, long len)
         putchar('|');
         putchar('\n');
     }
-    
+
     printf("|0x%.8x| ", len);
 }
 
