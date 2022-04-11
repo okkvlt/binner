@@ -1,15 +1,19 @@
-Um simples manipulador de arquivos binários.
+# Binner
+## _Simple binary file byte handler_
 
-Funções adicionadas:
-	Leitor de bytes de arquivos binários: ./binner [bin_file]
-		- Lê de 16 em 16;
-		- À esquerda, mostra o endereço da linha;
-		- À direita, mostra cada byte convertido em char.
+A simple program for manipulating data and bytes of binary files. Useful for quickly and conveniently performing non-complex reverse engineering that involves byte modification.
 
-Funções vindouras:
-	Modificar/alterador de bytes de arquivos binários;
-		- Útil para eng. reversa.
-	Inseridor de bytes em arquivos binários;
-	Removedor de bytes em arquivos binários.
+### ▪ Functions
 
-~Coded by okkvlt
+- Byte reader;
+    - On the left, it shows the address of the line;
+    - In the middle, it shows the bytes;
+    - On the right, it shows each byte converted to char;
+- _Byte changer (not yet implemented);_
+- _Byte inserter (not yet implemented);_
+- _Byte remover (not yet implemented)._
+
+### ▪ Demo
+[![N|Solid](https://i.imgur.com/iEffLsN.png)](https://nodesource.com/products/nsolid)
+
+\~ Coded by okkvlt.
