@@ -1,5 +1,5 @@
 # Binner
-## _Simple binary file byte handler_
+## _Simple byte handler_
 
 A simple program for manipulating data and bytes of binary files. Useful for quickly and conveniently performing non-complex reverse engineering that involves byte modification.
 
