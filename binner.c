@@ -31,33 +31,10 @@ unsigned char *buffer(FILE *f, long len)
     return buffer;
 }
 
-int main(int argc, char **argv)
+void show_bytes_from_buffer(unsigned char *buff, long len)
 {
-    if (argc == 1)
-        return 0;
-
-    FILE *f = fopen(argv[1], "rb");
-
-    long len = len_offsets(f);
-    unsigned char *buff = buffer(f, len);
-
     int lines = len / 16;
-
-    struct bytes_char
-    {
-        int bytes[len];
-        char c[len];
-    };
-
-    typedef struct bytes_char BYTES;
-
-    BYTES *dict_bytes = malloc(sizeof(BYTES));
-
-    for (int i = 0; i < len; i++)
-    {
-        dict_bytes->bytes[i] = (int)buff[i];
-        dict_bytes->c[i] = buff[i];
-    }
+    lines++;
 
     for (int i = 0; i < lines + 1; i++)
     {
@@ -65,21 +42,21 @@ int main(int argc, char **argv)
 
         for (int j = i * 16; j < 16 * (i + 1); j++)
         {
-            if (dict_bytes->bytes[j] < 256)
-                printf("%.2x ", dict_bytes->bytes[j]);
+            if (buff[j] < 256)
+                printf("%.2x ", buff[j]);
         }
 
         printf(" |");
 
         for (int j = i * 16; j < 16 * (i + 1); j++)
         {
-            if (dict_bytes->c[j] < 256)
+            if (buff[j] < 256)
             {
-                if (dict_bytes->c[j] > 32 && dict_bytes->c[j] < 127)
-                    printf("%c", dict_bytes->c[j]);
-                else if (dict_bytes->c[j] == '\0')
+                if (buff[j] > 32 && buff[j] < 127)
+                    printf("%c", (char) buff[j]);
+                else if (buff[j] == '\0')
                     printf(".");
-                else if (dict_bytes->c[j] == '\0')
+                else if (buff[j] == '\0')
                     printf(" ");
                 else
                     putchar('?');
@@ -89,6 +66,23 @@ int main(int argc, char **argv)
         putchar('|');
         putchar('\n');
     }
+}
+
+int main(int argc, char **argv)
+{
+    if (argc < 3)
+    {
+        puts("Syntax:");
+        puts("  Byte reader: $ ./binner -r [bin_file]");
+        return 0;
+    }
+
+    FILE *f = fopen(argv[2], "rb");
+
+    long len = len_offsets(f);
+    unsigned char *buff = buffer(f, len);
+
+    show_bytes_from_buffer(buff, len);
 
     return 0;
 }

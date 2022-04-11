@@ -14,11 +14,11 @@ A simple program for manipulating data and bytes of binary files. Useful for qui
 - _Byte remover (not yet implemented)._
 
 ### ▪ How to use
-Use: ./binner [bin_file]
+Byte reader: `$ ./binner -r [bin_file]`
 
 ### ▪ Demonstration
-Example: `$ ./binner exit.out`
+Example: `$ ./binner -r bin`
 
-![Demonstration of byte reader](https://i.imgur.com/iEffLsN.png)
+![Demonstration of byte reader](https://i.imgur.com/Q77SYVs.png)
 
 \~ Coded by okkvlt.
