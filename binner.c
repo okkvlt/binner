@@ -36,9 +36,9 @@ void show_bytes_from_buffer(unsigned char *buff, long len)
     int lines = len / 16;
     lines++;
 
-    for (int i = 0; i < lines + 1; i++)
+    for (int i = 0; i < lines; i++)
     {
-        printf("|%.8x| ", i * 16);
+        printf("|0x%.8x| ", i * 16);
 
         for (int j = i * 16; j < 16 * (i + 1); j++)
         {
@@ -56,7 +56,7 @@ void show_bytes_from_buffer(unsigned char *buff, long len)
                     printf("%c", (char) buff[j]);
                 else if (buff[j] == '\0')
                     printf(".");
-                else if (buff[j] == '\0')
+                else if (buff[j] == '\n' || buff[j] == 32)
                     printf(" ");
                 else
                     putchar('?');
@@ -66,6 +66,8 @@ void show_bytes_from_buffer(unsigned char *buff, long len)
         putchar('|');
         putchar('\n');
     }
+    
+    printf("|0x%.8x| ", len);
 }
 
 int main(int argc, char **argv)
