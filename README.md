@@ -14,6 +14,6 @@ A simple program for manipulating data and bytes of binary files. Useful for qui
 - _Byte remover (not yet implemented)._
 
 ### ▪ Demo
-[![N|Solid](https://i.imgur.com/iEffLsN.png)](https://nodesource.com/products/nsolid)
+[![Demonstration of byte reader](https://i.imgur.com/iEffLsN.png)](https://nodesource.com/products/nsolid)
 
 \~ Coded by okkvlt.
