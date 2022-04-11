@@ -1,0 +1,15 @@
+Um simples manipulador de arquivos binários.
+
+Funções adicionadas:
+	Leitor de bytes de arquivos binários: ./binner [bin_file]
+		- Lê de 16 em 16;
+		- À esquerda, mostra o endereço da linha;
+		- À direita, mostra cada byte convertido em char.
+
+Funções vindouras:
+	Modificar/alterador de bytes de arquivos binários;
+		- Útil para eng. reversa.
+	Inseridor de bytes em arquivos binários;
+	Removedor de bytes em arquivos binários.
+
+~Coded by okkvlt
