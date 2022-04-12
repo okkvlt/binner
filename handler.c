@@ -1,14 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-
-// coded by okkvlt
-// use ./binner [bin_file]
-
-/*
- * byte reader: $ ./binner -r [bin_file]
- * byte changer: $ ./binner -c [bin_file]
- */
+#include "handler.h"
 
 long len_offsets(FILE *f)
 {
@@ -39,7 +31,7 @@ void show_bytes_from_buffer(unsigned char *buff, long len)
 
     for (int i = 0; i < lines; i++)
     {
-        printf("|0x%.8x| ", i * 16);
+        printf("|0x%.8x| \033[0m", i * 16);
 
         for (int j = i * 16; j < 16 * (i + 1); j++)
         {
@@ -47,7 +39,7 @@ void show_bytes_from_buffer(unsigned char *buff, long len)
                 printf("%.2x ", buff[j]);
         }
 
-        printf(" |");
+        printf("\033[0;32m |");
 
         for (int j = i * 16; j < 16 * (i + 1); j++)
         {
@@ -89,54 +81,5 @@ void change_binary_file(FILE *f, unsigned char *buff, long len, int pos, int byt
 
     fwrite(new_buff, 1, sizeof(char) * len, f);
 
-    puts("[+] Byte changed!");
-}
-
-int main(int argc, char **argv)
-{
-    if (argc < 3)
-    {
-        puts("[!] Syntax:");
-        puts("[!]   Byte reader: $ ./binner -r [bin_file]");
-        puts("[!]   Byte changer: $ ./binner -c [bin_file]");
-        return 0;
-    }
-
-    FILE *f = fopen(argv[2], "rb");
-
-    if (!f)
-        return 0;
-
-    long len = len_offsets(f);
-    unsigned char *buff = buffer(f, len);
-
-    fclose(f);
-
-    if (argv[1][0] == '-' && argv[1][1] == 'c')
-    {
-        int pos;
-        int byte;
-
-        printf("[!] Address (in hexadecimal) [ex. 0x10a0]: ");
-        scanf("%x", &pos);
-        printf("[!] New byte (in hexadecimal) [ex. 0x75]: ");
-        scanf("%x", &byte);
-
-        FILE *f = fopen(argv[2], "wb");
-        change_binary_file(f, buff, len, pos, byte);
-        fclose(f);
-    }
-    else if (argv[1][0] == '-' && argv[1][1] == 'r')
-    {
-        show_bytes_from_buffer(buff, len);
-    }
-    else
-    {
-        puts("[-] Invalid option!\n");
-        puts("[!] Syntax:");
-        puts("[!]   Byte reader: $ ./binner -r [bin_file]");
-        puts("[!]   Byte changer: $ ./binner -c [bin_file]");
-    }
-
-    return 0;
+    puts("\033[1;32m[+] Byte changed!\033[0;32m");
 }
