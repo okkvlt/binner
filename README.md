@@ -12,8 +12,9 @@ A simple program for manipulating data and bytes of binary files. Useful for qui
 
 ### ▪ How to use
 
-Byte reader: `$ ./binner -r [bin_file]`
-Byte changer: `$ ./binner -c [bin_file]`
+Byte reader: `$ ./binner -r [bin_file]`;
+
+Byte changer: `$ ./binner -c [bin_file]`.
 
 ### ▪ Demonstration
 
