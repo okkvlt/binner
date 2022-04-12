@@ -22,20 +22,40 @@ unsigned char *buffer(FILE *f, long len)
     return buffer;
 }
 
-void show_bytes_from_buffer(unsigned char *buff, long len)
+void show_bytes_from_buffer(char *filename)
 {
-    int lines = len / 16;
+    FILE *f;
+
+    long len;
+    unsigned char *buff;
+
+    int lines;
+    
+    f = fopen(filename, "rb");
+
+    if (!f)
+    {
+        puts("\033[1;31m[-] File not found!\033[0m");
+        exit(0);
+    }
+
+    len = len_offsets(f);
+    buff = buffer(f, len);
+
+    fclose(f);
+
+    lines = len / 16;
 
     if (lines * 16 < len)
         lines++;
 
     for (int i = 0; i < lines; i++)
     {
-        printf("|0x%.8x| \033[0m", i * 16);
+        printf("\033[0;32m|0x%.8x| \033[0m", i * 16);
 
         for (int j = i * 16; j < 16 * (i + 1); j++)
         {
-            if (j < len && buff[j] < 256)
+            if (j < len && buff[j] <= 0xff)
                 printf("%.2x ", buff[j]);
         }
 
@@ -43,7 +63,7 @@ void show_bytes_from_buffer(unsigned char *buff, long len)
 
         for (int j = i * 16; j < 16 * (i + 1); j++)
         {
-            if (j < len && buff[j] < 256)
+            if (j < len && buff[j] <= 0xff)
             {
                 if (buff[j] > 32 && buff[j] < 127)
                     printf("%c", (char)buff[j]);
@@ -60,26 +80,65 @@ void show_bytes_from_buffer(unsigned char *buff, long len)
         putchar('\n');
     }
 
-    printf("|0x%.8x| ", len);
+    printf("|0x%.8x| \033[0m", len);
 }
 
 unsigned char *change_byte_from_buff(unsigned char *buff, long len, int pos, int byte)
 {
-    if (!(pos < 0) || !(pos > len))
-    {
-        buff[pos] = byte;
-
-        return buff;
-    }
+    buff[pos] = byte;
+    return buff;
 }
 
-void change_binary_file(FILE *f, unsigned char *buff, long len, int pos, int byte)
+void change_binary_file(char *filename)
 {
-    puts("\n[!] Changing byte!");
+    int pos;
+    int byte;
 
-    unsigned char *new_buff = change_byte_from_buff(buff, len, pos, byte);
+    long len;
 
+    unsigned char *buff;
+    unsigned char *new_buff;
+
+    FILE *f;
+
+    f = fopen(filename, "rb");
+
+    if (!f)
+    {
+        puts("\033[1;31m[-] File not found!\033[0m");
+        exit(0);
+    }
+
+    len = len_offsets(f);
+    buff = buffer(f, len);
+
+    fclose(f);
+
+    printf("\033[0;32m[!] Address (in hexadecimal) [ex. 0x10a0]: ");
+    scanf("%x", &pos);
+    printf("[!] New byte (in hexadecimal) [ex. 0x75]: ");
+    scanf("%x", &byte);
+
+    if (pos < 0 || pos > len)
+    {
+        puts("\033[1;31m[-] Invalid address!\033[0m");
+        exit(0);
+    }
+
+    if (byte > 0xff)
+    {
+        puts("\033[1;31m[-] Invalid byte!\033[0m");
+        exit(0);
+    }
+
+    puts("\n\033[0;32m[!] Changing byte!");
+
+    f = fopen(filename, "wb");
+
+    new_buff = change_byte_from_buff(buff, len, pos, byte);
     fwrite(new_buff, 1, sizeof(char) * len, f);
 
-    puts("\033[1;32m[+] Byte changed!\033[0;32m");
+    puts("\033[1;32m[+] Byte changed!\033[0m");
+
+    fclose(f);
 }
