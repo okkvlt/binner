@@ -30,7 +30,7 @@ void show_bytes_from_buffer(char *filename)
     unsigned char *buff;
 
     int lines;
-    
+
     f = fopen(filename, "rb");
 
     if (!f)
@@ -141,4 +141,40 @@ void change_binary_file(char *filename)
     puts("\033[1;32m[+] Byte changed!\033[0m");
 
     fclose(f);
+}
+
+void get_info_from_binary(char *filename)
+{
+    FILE *f;
+
+    long len;
+    unsigned char *buff;
+
+    int elf[] = {0x7f, 0x45, 0x4c, 0x46};
+    int pe[] = {0x4d, 0x5a, 0x90, 0x00};
+
+    f = fopen(filename, "rb");
+
+    if (!f)
+    {
+        puts("\033[1;31m[-] File not found!\033[0m");
+        exit(0);
+    }
+
+    len = len_offsets(f);
+    buff = buffer(f, len);
+
+    fclose(f);
+
+    if (buff[0] == elf[0] && buff[1] == elf[1] && buff[2] == elf[2] && buff[3] == elf[3])
+    {
+        puts("\033[0;32m[!] File pattern: \033[0mELF");
+    }
+    
+    if (buff[0] == pe[0] && buff[1] == pe[1] && buff[2] == pe[2] && buff[3] == pe[3])
+    {
+        puts("\033[0;32m[!] File pattern: \033[0mWindows PE");
+    }
+
+    printf("\033[0;32m[!] Byte offset: \033[0m%x\n", len);
 }
