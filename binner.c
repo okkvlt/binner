@@ -83,13 +83,13 @@ unsigned char *change_byte_from_buff(unsigned char *buff, long len, int pos, int
 
 void change_binary_file(FILE *f, unsigned char *buff, long len, int pos, int byte)
 {
-    puts("\n[!] changing byte!");
+    puts("\n[!] Changing byte!");
 
     unsigned char *new_buff = change_byte_from_buff(buff, len, pos, byte);
 
     fwrite(new_buff, 1, sizeof(char) * len, f);
 
-    puts("[+] byte changed!");
+    puts("[+] Byte changed!");
 }
 
 int main(int argc, char **argv)
@@ -98,6 +98,7 @@ int main(int argc, char **argv)
     {
         puts("[!] Syntax:");
         puts("[!]   Byte reader: $ ./binner -r [bin_file]");
+        puts("[!]   Byte changer: $ ./binner -c [bin_file]");
         return 0;
     }
 
@@ -116,9 +117,9 @@ int main(int argc, char **argv)
         int pos;
         int byte;
 
-        printf("[!] Escreva o endereço (em hexa) [ex. 0x10a0]: ");
+        printf("[!] Address (in hexadecimal) [ex. 0x10a0]: ");
         scanf("%x", &pos);
-        printf("[!] Escreva o novo byte (em hexa) [ex. 0x75]: ");
+        printf("[!] New byte (in hexadecimal) [ex. 0x75]: ");
         scanf("%x", &byte);
 
         FILE *f = fopen(argv[2], "wb");
@@ -126,9 +127,16 @@ int main(int argc, char **argv)
         fclose(f);
     }
     else if (argv[1][0] == '-' && argv[1][1] == 'r')
+    {
         show_bytes_from_buffer(buff, len);
+    }
     else
-        puts("[-] invalid option!");
+    {
+        puts("[-] Invalid option!\n");
+        puts("[!] Syntax:");
+        puts("[!]   Byte reader: $ ./binner -r [bin_file]");
+        puts("[!]   Byte changer: $ ./binner -c [bin_file]");
+    }
 
     return 0;
 }
