@@ -24,6 +24,6 @@ Example: `$ ./binner -r bin`
 
 Example: `$ ./binner -c bin`
 
-![Demonstration of byte changer](https://i.imgur.com/OFPlcXq.png)
+![Demonstration of byte changer](https://i.imgur.com/c89J1YM.png)
 
 \~ Coded by okkvlt.
