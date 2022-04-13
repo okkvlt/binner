@@ -20,11 +20,13 @@ Commands: `$ ./binner -h` or `$ ./binner --help`;
 ### ▪ Demonstration
 
 Demonstration of byte reader;
+
 Example: `$ ./binner -r bin`
 
 ![Demonstration of byte reader](https://i.imgur.com/2rBiUhe.png)
 
 Demonstration of byte changer;
+
 Example: `$ ./binner -c bin`
 
 ![Demonstration of byte changer](https://i.imgur.com/E2ElWx7.png)
