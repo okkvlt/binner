@@ -31,6 +31,13 @@ void show_bytes_from_buffer(char *filename)
 
     int lines;
 
+    char check;
+
+    int start;
+    int end;
+
+    int offset;
+
     f = fopen(filename, "rb");
 
     if (!f)
@@ -44,26 +51,52 @@ void show_bytes_from_buffer(char *filename)
 
     fclose(f);
 
-    lines = len / 16;
+    printf("\033[0;32m[!]\033[0m Do you want to view all bytes \033[0;32m[y/n]\033[0m? ");
+    scanf("%c", &check);
 
-    if (lines * 16 < len)
+    if (check == 'n')
+    {
+        printf("\033[0;32m[!]\033[0m Start address \033[0;32m[ex. 0x1d0]\033[0m: ");
+        scanf("%x", &start);
+        printf("\033[0;32m[!]\033[0m End address \033[0;32m[ex. 0x1d1]\033[0m: ");
+        scanf("%x", &end);
+
+        if (start < 0 || start > len || end < 0 || end > len || start > end || start == end)
+        {
+            puts("\033[1;31m[-] Invalid address(es)!\033[0m");
+            exit(0);
+        }
+    }
+    else
+    {
+        start = 0;
+        end = len;
+    }
+    
+    offset = end - start;
+
+    lines = offset / 0x10;
+
+    if (lines * 0x10 < offset)
         lines++;
 
-    for (int i = 0; i < lines; i++)
-    {
-        printf("\033[0;32m|0x%.8x| \033[0m", i * 16);
+    lines *= 16;
+    lines += start;
 
-        for (int j = i * 16; j < 16 * (i + 1); j++)
+    putchar('\n');
+
+    for (int i = start; i < lines; i += 16)
+    {
+        printf("\033[0;32m|0x%.8x| \033[0m", i);
+        for (int j = 0 + i; j < 16 + i; j++)
         {
-            if (j < len && buff[j] <= 0xff)
+            if (j < end && buff[j] <= 0xff)
                 printf("%.2x ", buff[j]);
         }
-
         printf("\033[0;32m |");
-
-        for (int j = i * 16; j < 16 * (i + 1); j++)
+        for (int j = 0 + i; j < 16 + i; j++)
         {
-            if (j < len && buff[j] <= 0xff)
+            if (j < end && buff[j] <= 0xff)
             {
                 if (buff[j] > 32 && buff[j] < 127)
                     printf("%c", (char)buff[j]);
@@ -80,7 +113,8 @@ void show_bytes_from_buffer(char *filename)
         putchar('\n');
     }
 
-    printf("|0x%.8x| \033[0m", len);
+    printf("|0x%.8x| \033[0m", end);
+
 }
 
 unsigned char *change_byte_from_buff(unsigned char *buff, long len, int pos, int byte)
@@ -153,6 +187,8 @@ void get_info_from_binary(char *filename)
     int elf[] = {0x7f, 0x45, 0x4c, 0x46};
     int pe[] = {0x4d, 0x5a, 0x90, 0x00};
 
+    int format;
+
     f = fopen(filename, "rb");
 
     if (!f)
@@ -168,13 +204,15 @@ void get_info_from_binary(char *filename)
 
     if (buff[0] == elf[0] && buff[1] == elf[1] && buff[2] == elf[2] && buff[3] == elf[3])
     {
-        puts("\033[0;32m[!] File pattern: \033[0mELF");
-    }
-    
-    if (buff[0] == pe[0] && buff[1] == pe[1] && buff[2] == pe[2] && buff[3] == pe[3])
-    {
-        puts("\033[0;32m[!] File pattern: \033[0mWindows PE");
+        puts("\033[0;32m[!] Format: \033[0mELF");
+        format = 0;
     }
 
-    printf("\033[0;32m[!] Byte offset: \033[0m%x\n", len);
+    if (buff[0] == pe[0] && buff[1] == pe[1] && buff[2] == pe[2] && buff[3] == pe[3])
+    {
+        puts("\033[0;32m[!] Format: \033[0mWindows PE");
+        format = 1;
+    }
+
+    printf("\033[0;32m[!] Bytes offset: \033[0m%x\n", len);
 }
