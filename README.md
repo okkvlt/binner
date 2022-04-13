@@ -5,25 +5,28 @@ A simple program for manipulating data and bytes of binary files. Useful for qui
 
 ### ▪ Functions
 
+- File info;
 - Byte reader;
 - Byte changer;
-- _Byte inserter (not yet implemented);_
-- _Byte remover (not yet implemented)._
+- Byte inserter;
+- Byte deleter;
 
 ### ▪ How to use
 
-Byte reader: `$ ./binner -r [bin_file]`;
+Commands: `$ ./binner -h` or `$ ./binner --help`;
 
-Byte changer: `$ ./binner -c [bin_file]`.
+![Demonstration of --help](https://i.imgur.com/YcfUb34.png)
 
 ### ▪ Demonstration
 
+Demonstration of byte reader;
 Example: `$ ./binner -r bin`
 
-![Demonstration of byte reader](https://i.imgur.com/Q77SYVs.png)
+![Demonstration of byte reader](https://i.imgur.com/2rBiUhe.png)
 
+Demonstration of byte changer;
 Example: `$ ./binner -c bin`
 
-![Demonstration of byte changer](https://i.imgur.com/c89J1YM.png)
+![Demonstration of byte changer](https://i.imgur.com/E2ElWx7.png)
 
 \~ Coded by okkvlt.
