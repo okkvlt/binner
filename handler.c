@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "handler.h"
 
 long len_offsets(FILE *f)
@@ -72,7 +73,7 @@ void show_bytes_from_buffer(char *filename)
         start = 0;
         end = len;
     }
-    
+
     offset = end - start;
 
     lines = offset / 0x10;
@@ -114,7 +115,6 @@ void show_bytes_from_buffer(char *filename)
     }
 
     printf("|0x%.8x| \033[0m", end);
-
 }
 
 unsigned char *change_byte_from_buff(unsigned char *buff, long len, int pos, int byte)
@@ -153,7 +153,7 @@ void change_binary_file(char *filename)
     printf("\033[0;32m[!]\033[0m New byte \033[0;32m[ex. 0x75]\033[0m: ");
     scanf("%x", &byte);
 
-    if (pos < 0 || pos > len)
+    if (pos < 0 || pos >= len)
     {
         puts("\033[1;31m[-] Invalid address!\033[0m");
         exit(0);
@@ -215,4 +215,100 @@ void get_info_from_binary(char *filename)
     }
 
     printf("\033[0;32m[!] Bytes offset: \033[0m%x\n", len);
+}
+
+unsigned char *insert_at(unsigned char *buff, long len, int x, int pos)
+{
+    if (pos < 0 || pos >= len || x > 0xff)
+    {
+        puts("\033[1;31m[-] Invalid insertion!\033[0m");
+        exit(0);
+    }
+
+    for (int i = len; i > pos; i--)
+        buff[i] = buff[i - 1];
+
+    buff[pos] = x;
+
+    return buff;
+}
+
+unsigned char *delete_at(unsigned char *buff, long len, int pos)
+{
+    if (pos < 0 || pos >= len)
+    {
+        puts("\033[1;31m[-] Invalid deletion!\033[0m");
+        exit(0);
+    }
+
+    int aux;
+
+    for (int i = pos; i < len - 1; i++)
+    {
+        aux = buff[i];
+        buff[i] = buff[i + 1];
+        buff[i + 1] = buff[i];
+    }
+
+    buff[len - 1] = 0x0;
+
+    return buff;
+}
+
+void insert_or_delete_byte_at(char *filename, int mode)
+{
+    int pos;
+    int byte;
+    
+    long len;
+
+    unsigned char *buff;
+    unsigned char *new_buff;
+
+    FILE *f;
+
+    f = fopen(filename, "rb");
+
+    if (!f)
+    {
+        puts("\033[1;31m[-] File not found!\033[0m");
+        exit(0);
+    }
+
+    len = len_offsets(f);
+    buff = buffer(f, len);
+
+    fclose(f);
+
+    printf("\033[0;32m[!]\033[0m Address \033[0;32m[ex. 0x10a0]\033[0m: ");
+    scanf("%x", &pos);
+    if (mode == 1)
+    {
+        printf("\033[0;32m[!]\033[0m New byte \033[0;32m[ex. 0x75]\033[0m: ");
+        scanf("%x", &byte);
+    }
+
+    puts("\n\033[0;32m[!] Working...!");
+
+    f = fopen(filename, "wb");
+
+    if (mode == 1)
+    {
+        new_buff = insert_at(buff, len, byte, pos);
+        len++;
+    }
+    else
+    {
+        new_buff = delete_at(buff, len, pos);
+        len--;
+    }
+
+    fwrite(new_buff, 1, sizeof(char) * len, f);
+
+    if (mode == 1)
+        printf("\033[1;32m[+] Byte %.2x inserted at position %.8x!\033[0m", byte, pos);
+    else
+        printf("\033[1;32m[+] Byte at position %.8x deleted!\033[0m", pos);
+
+    fclose(f);
 }

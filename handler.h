@@ -13,6 +13,12 @@ void change_binary_file(char *);
 
 void get_info_from_binary(char *);
 
+unsigned char *insert_at(unsigned char *, long, int, int);
+
+unsigned char *delete_at(unsigned char *, long, int);
+
+void insert_or_delete_byte_at(char *, int);
+
 void banner();
 
 #endif
