@@ -53,9 +53,9 @@ int main(int argc, char **argv)
         insert_or_delete_byte_at(argv[2], 2);
         return 0;
     }
-    
+
     puts("\033[1;31m[-] Invalid argument!\033[0m");
     puts("\033[0;32m[!]\033[0m Use: $ ./binner -h");
-    
+
     return 0;
 }

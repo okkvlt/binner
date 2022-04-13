@@ -259,7 +259,7 @@ void insert_or_delete_byte_at(char *filename, int mode)
 {
     int pos;
     int byte;
-    
+
     long len;
 
     unsigned char *buff;
