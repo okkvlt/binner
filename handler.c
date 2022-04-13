@@ -148,9 +148,9 @@ void change_binary_file(char *filename)
 
     fclose(f);
 
-    printf("\033[0;32m[!] Address (in hexadecimal) [ex. 0x10a0]: ");
+    printf("\033[0;32m[!]\033[0m Address \033[0;32m[ex. 0x10a0]\033[0m: ");
     scanf("%x", &pos);
-    printf("[!] New byte (in hexadecimal) [ex. 0x75]: ");
+    printf("\033[0;32m[!]\033[0m New byte \033[0;32m[ex. 0x75]\033[0m: ");
     scanf("%x", &byte);
 
     if (pos < 0 || pos > len)
